@@ -1,0 +1,226 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "Provides information regarding the current weather at various golf courses, including temperature, wind, chances of rain, and other conditions. Also makes a recommendation as to whether or not the weather is conducive to playing golf.\n",
+    "version" : "1.0.0",
+    "title" : "TeeOff API",
+    "termsOfService" : "http://teeoffapi.com/terms/",
+    "contact" : {
+      "email" : "info@teeoff.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host" : "virtserver.swaggerhub.com",
+  "basePath" : "/ChicagoTechWriters/TeeOff/1.0.0",
+  "tags" : [ {
+    "name" : "Course Report",
+    "description" : "Report from the course",
+    "externalDocs" : {
+      "description" : "Find out more",
+      "url" : "http://teeoffapi.com"
+    }
+  } ],
+  "schemes" : [ "https", "http" ],
+  "paths" : {
+    "/coursereport/{courseID}" : {
+      "get" : {
+        "tags" : [ "courseID" ],
+        "summary" : "Check the weather conditions by course ID.",
+        "description" : "Returns a weather report for the selected course at a specific date and time.",
+        "operationId" : "getCourseById",
+        "produces" : [ "application/json", "application/xml" ],
+        "parameters" : [ {
+          "name" : "courseID",
+          "in" : "path",
+          "description" : "The ID of the course you have selected for this Course Report.",
+          "required" : true,
+          "type" : "string",
+          "format" : "int64"
+        }, {
+          "name" : "date",
+          "in" : "query",
+          "description" : "Date for which the report is being run in MMDDYYYY format.",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "time",
+          "in" : "query",
+          "description" : "Time of day for which the report is being run. Can be Early Morning, Late Morning, Early Afternoon, or Twilight.",
+          "required" : true,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "Early Morning", "Late Morning", "Early Afternoon", "Twilight" ]
+          },
+          "collectionFormat" : "multi",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/Course"
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "Course not found"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "courseID" ],
+        "summary" : "Add a new course to the report.",
+        "operationId" : "addCourse",
+        "consumes" : [ "application/x-www-form-urlencoded" ],
+        "produces" : [ "application/json", "application/xml" ],
+        "parameters" : [ {
+          "name" : "courseID",
+          "in" : "path",
+          "description" : "ID being assigned to the course being added.",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "name",
+          "in" : "formData",
+          "description" : "Full name of the course being added.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "zip",
+          "in" : "query",
+          "description" : "Zip code where the new course is located.",
+          "required" : true,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/NewCourse"
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "courseID" ],
+        "summary" : "Remove course from report by ID",
+        "description" : "Removes the selected course from the report using the Course ID.",
+        "operationId" : "deleteCourseID",
+        "produces" : [ "application/json", "application/xml" ],
+        "parameters" : [ {
+          "name" : "courseID",
+          "in" : "path",
+          "description" : "ID of the course that needs to be deleted.",
+          "required" : true,
+          "type" : "integer",
+          "minimum" : 3.0,
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "Course not found"
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "Course" : {
+      "type" : "object",
+      "properties" : {
+        "reportname" : {
+          "type" : "string",
+          "example" : "Course Report"
+        },
+        "courseid" : {
+          "type" : "integer",
+          "example" : 417
+        },
+        "name" : {
+          "type" : "string",
+          "example" : "Bull Valley GC"
+        },
+        "date" : {
+          "type" : "string",
+          "example" : "April 26, 2017"
+        },
+        "time" : {
+          "type" : "array",
+          "example" : "Early Afternoon",
+          "description" : "report time",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "Early Morning", "Late Morning", "Early Afternoon", "Twilight" ]
+          }
+        },
+        "temp" : {
+          "type" : "string",
+          "example" : "72 F"
+        },
+        "wind" : {
+          "type" : "string",
+          "example" : "7 MPH - NNE"
+        },
+        "rain" : {
+          "type" : "string",
+          "example" : "10%"
+        },
+        "outlook" : {
+          "type" : "string",
+          "example" : "Swing away!!!"
+        }
+      },
+      "example" : {
+        "date" : "April 26, 2017",
+        "rain" : "10%",
+        "temp" : "72 F",
+        "reportname" : "Course Report",
+        "name" : "Bull Valley GC",
+        "time" : "Early Afternoon",
+        "courseid" : 417,
+        "outlook" : "Swing away!!!",
+        "wind" : "7 MPH - NNE"
+      }
+    },
+    "NewCourse" : {
+      "type" : "object",
+      "properties" : {
+        "courseid" : {
+          "type" : "integer",
+          "example" : 916
+        },
+        "name" : {
+          "type" : "string",
+          "example" : "Pebble Beach Golf Links"
+        },
+        "zip" : {
+          "type" : "string",
+          "example" : "93953"
+        }
+      },
+      "example" : {
+        "zip" : "93953",
+        "name" : "Pebble Beach Golf Links",
+        "courseid" : 916
+      }
+    }
+  },
+  "externalDocs" : {
+    "description" : "Find out more about Swagger",
+    "url" : "http://swagger.io"
+  }
+}
