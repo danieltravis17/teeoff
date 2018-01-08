@@ -1,0 +1,214 @@
+h1. TeeOff API Provides information regarding the current weather at various golf courses, including temperature, wind, chances of rain, and other conditions. Also makes a recommendation as to whether or not the weather is conducive to playing golf. 
+
+*Version:* 1.0.0
+
+----
+
+{toc:printable=true|style=square|minLevel=2|maxLevel=3|type=list|outline=false|include=.*}
+
+h2. Endpoints
+
+    h3. addCourse
+    {status:colour=Yellow|title=post|subtle=false}
+    {code}
+    post /coursereport/{courseID}
+    {code}
+    *Summary:* Add a new course to the report.
+    *Description:* 
+
+
+    h4. Parameters
+        h5. Path Parameters
+        ||Name||Description||Required||Default||Pattern||
+        |courseID |ID being assigned to the course being added. |(/) | |  |
+
+
+
+
+        h5. Query Parameters
+        ||Name||Description||Required||Default||Pattern||
+        |zip |Zip code where the new course is located. |(/) | |  |
+
+
+
+
+
+    h4. Responses
+        *Status Code:* 200
+        *Message:*     successful operation
+        {code:title=Response Type}
+NewCourse
+        {code}
+        See [#models]
+
+
+
+        {code:title=Response Schema |collapse=true}
+{
+  "description" : "successful operation",
+  "schema" : {
+    "$ref" : "#/definitions/NewCourse"
+  }
+}
+        {code}
+        *Status Code:* 405
+        *Message:*     Invalid input
+        {code:title=Response Type}
+
+        {code}
+        See [#models]
+
+
+
+        {code:title=Response Schema |collapse=true}
+{
+  "description" : "Invalid input"
+}
+        {code}
+    ----
+
+    h3. deleteCourseID
+    {status:colour=Yellow|title=delete|subtle=false}
+    {code}
+    delete /coursereport/{courseID}
+    {code}
+    *Summary:* Remove course from report by ID
+    *Description:* Removes the selected course from the report using the Course ID.
+
+
+    h4. Parameters
+        h5. Path Parameters
+        ||Name||Description||Required||Default||Pattern||
+        |courseID |ID of the course that needs to be deleted. |(/) | |  |
+
+
+
+
+
+
+
+
+    h4. Responses
+        *Status Code:* 400
+        *Message:*     Invalid ID supplied
+        {code:title=Response Type}
+
+        {code}
+        See [#models]
+
+
+
+        {code:title=Response Schema |collapse=true}
+{
+  "description" : "Invalid ID supplied"
+}
+        {code}
+        *Status Code:* 404
+        *Message:*     Course not found
+        {code:title=Response Type}
+
+        {code}
+        See [#models]
+
+
+
+        {code:title=Response Schema |collapse=true}
+{
+  "description" : "Course not found"
+}
+        {code}
+    ----
+
+    h3. getCourseById
+    {status:colour=Yellow|title=get|subtle=false}
+    {code}
+    get /coursereport/{courseID}
+    {code}
+    *Summary:* Check the weather conditions by course ID.
+    *Description:* Returns a weather report for the selected course at a specific date and time.
+
+
+    h4. Parameters
+        h5. Path Parameters
+        ||Name||Description||Required||Default||Pattern||
+        |courseID |The ID of the course you have selected for this Course Report. |(/) | |  |
+
+
+
+
+        h5. Query Parameters
+        ||Name||Description||Required||Default||Pattern||
+        |date |Date for which the report is being run in MMDDYYYY format. |(/) | |  |
+
+|time |Time of day for which the report is being run. Can be Early Morning, Late Morning, Early Afternoon, or Twilight. |(/) | |  |
+
+
+
+
+
+    h4. Responses
+        *Status Code:* 200
+        *Message:*     successful operation
+        {code:title=Response Type}
+Course
+        {code}
+        See [#models]
+
+
+
+        {code:title=Response Schema |collapse=true}
+{
+  "description" : "successful operation",
+  "schema" : {
+    "$ref" : "#/definitions/Course"
+  }
+}
+        {code}
+        *Status Code:* 400
+        *Message:*     Invalid ID supplied
+        {code:title=Response Type}
+
+        {code}
+        See [#models]
+
+
+
+        {code:title=Response Schema |collapse=true}
+{
+  "description" : "Invalid ID supplied"
+}
+        {code}
+        *Status Code:* 404
+        *Message:*     Course not found
+        {code:title=Response Type}
+
+        {code}
+        See [#models]
+
+
+
+        {code:title=Response Schema |collapse=true}
+{
+  "description" : "Course not found"
+}
+        {code}
+    ----
+
+h2. Models
+
+        h3. Course
+        ||Field Name||Required||Type||Description||
+         |reportname | |String | |
+ |courseid | |Integer | |
+ |name | |String | |
+ |date | |String | |
+ |time | |array[String] |report time |
+ |temp | |String | |
+ |wind | |String | |
+ |rain | |String | |
+ |outlook | |String | |
+        h3. NewCourse
+        ||Field Name||Required||Type||Description||
+         |courseid | |Integer | |
+ |name | |String | |
+ |zip | |String | |
