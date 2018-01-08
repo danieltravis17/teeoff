@@ -1,0 +1,35 @@
+<html>
+<head>
+<title>Sample Page</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+</head>
+<script>var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://simple-weather.p.mashape.com/weatherdata?lat=41.8781&lng=-87.6298",
+  "method": "GET",
+  "dataType": "json",
+  "headers": {
+    "Accept": "text/plain",
+    "X-Mashape-Key": "GO2JifiTFLmshMcH99BhMwdCYLfEp1Op1SpjsnaVFYBg5BizgR",
+    "Cache-Control": "no-cache",
+    "Postman-Token": "326d6bf6-e5ed-6342-2096-41f401ff2f71"
+  }
+}
+$.ajax(settings).done(function (response) {
+ console.log(response);
+
+ var content = response.query.results.channel.item.description;
+ $("#weatherDescription").append(content);
+});
+ </script>
+ <title>Sample Page</title>
+</head>
+<body>
+  <h1>Sample Page</h1>
+
+<div id="weatherDescription"></div>
+
+
+</body>
+</html>
